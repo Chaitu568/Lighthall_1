@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Air Distance Calculator</title>
+  <!-- Include necessary CSS stylesheets -->
+  <style>
+    /* Add your custom styles here */
+  </style>
+</head>
+<body>
+  <h1>Air Distance Calculator</h1>
+  
+  <label for="pointA">Point A:</label>
+  <input type="text" id="pointA" placeholder="latitude, longitude">
+  
+  <label for="pointB">Point B:</label>
+  <input type="text" id="pointB" placeholder="latitude, longitude">
+  
+  <button onclick="calculateDistance()">Calculate</button>
+  
+  <p id="result"></p>
+  
+  <!-- Include necessary JavaScript code -->
+  <script>
+    function calculateDistance() {
+      var pointA = document.getElementById("pointA").value;
+      var pointB = document.getElementById("pointB").value;
+      
+      // Extract latitude and longitude values
+      var coordinatesA = pointA.split(",");
+      var coordinatesB = pointB.split(",");
+      
+      // Convert coordinates to numbers
+      var latA = parseFloat(coordinatesA[0]);
+      var lonA = parseFloat(coordinatesA[1]);
+      var latB = parseFloat(coordinatesB[0]);
+      var lonB = parseFloat(coordinatesB[1]);
+      
+      // Calculate air distance in kilometers
+      var distance = getAirDistance(latA, lonA, latB, lonB);
+      
+      // Display the result
+      var resultElement = document.getElementById("result");
+      resultElement.textContent = "Distance: " + distance.toFixed(2) + "km";
+    }
+    
+    // Function to calculate air distance using Haversine formula
+    function getAirDistance(lat1, lon1, lat2, lon2) {
+      var earthRadius = 6371; // in kilometers
+      var dLat = toRadians(lat2 - lat1);
+      var dLon = toRadians(lon2 - lon1);
+      var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var distance = earthRadius * c;
+      return distance;
+    }
+    
+    // Function to convert degrees to radians
+    function toRadians(degrees) {
+      return degrees * (Math.PI / 180);
+    }
+  </script>
+</body>
+</html>
